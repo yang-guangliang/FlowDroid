@@ -107,15 +107,15 @@ public class SetupApplication {
         private MultiMap<SootClass, CallbackDefinition> callbackMethods = new HashMultiMap<>();
         private MultiMap<SootClass, SootClass> fragmentClasses = new HashMultiMap<>();
 
-        protected InfoflowAndroidConfiguration config = new InfoflowAndroidConfiguration();
+        private InfoflowAndroidConfiguration config = new InfoflowAndroidConfiguration();
 
         private Set<SootClass> entrypoints = null;
         private Set<String> callbackClasses = null;
         private SootMethod dummyMainMethod = null;
 
-        protected ARSCFileParser resources = null;
-        protected ProcessManifest manifest = null;
-        protected IValueProvider valueProvider = null;
+        private ARSCFileParser resources = null;
+        private ProcessManifest manifest = null;
+        private IValueProvider valueProvider = null;
 
         private final boolean forceAndroidJar;
         private ITaintPropagationWrapper taintWrapper;
@@ -148,11 +148,11 @@ public class SetupApplication {
          * @author Steven Arzt
          *
          */
-        protected static class MultiRunResultAggregator implements ResultsAvailableHandler {
+        public static class MultiRunResultAggregator implements ResultsAvailableHandler {
 
-                protected final InfoflowResults aggregatedResults = new InfoflowResults();
-                protected InfoflowResults lastResults = null;
-                protected IInfoflowCFG lastICFG = null;
+                private final InfoflowResults aggregatedResults = new InfoflowResults();
+                private InfoflowResults lastResults = null;
+                private IInfoflowCFG lastICFG = null;
 
                 @Override
                 public void onResultsAvailable(IInfoflowCFG cfg, InfoflowResults results) {
@@ -253,7 +253,7 @@ public class SetupApplication {
          *            The path to the APK file to be analyzed
          * @return The new configuration
          */
-        protected static InfoflowAndroidConfiguration getConfig(String androidJar, String apkFileLocation) {
+        public static InfoflowAndroidConfiguration getConfig(String androidJar, String apkFileLocation) {
                 InfoflowAndroidConfiguration config = new InfoflowAndroidConfiguration();
                 config.getAnalysisFileConfig().setTargetAPKFile(apkFileLocation);
                 config.getAnalysisFileConfig().setAndroidPlatformDir(androidJar);
@@ -423,7 +423,7 @@ public class SetupApplication {
          * @throws XmlPullParserException
          *             Thrown if the Android manifest file could not be read.
          */
-        protected void parseAppResources() throws IOException, XmlPullParserException {
+        public void parseAppResources() throws IOException, XmlPullParserException {
                 final String targetAPK = config.getAnalysisFileConfig().getTargetAPKFile();
 
                 // To look for callbacks, we need to start somewhere. We use the Android
@@ -453,7 +453,7 @@ public class SetupApplication {
          * @throws XmlPullParserException
          *             Thrown if the Android manifest file could not be read.
          */
-        protected void calculateCallbacks(ISourceSinkDefinitionProvider sourcesAndSinks)
+        public void calculateCallbacks(ISourceSinkDefinitionProvider sourcesAndSinks)
                         throws IOException, XmlPullParserException {
                 calculateCallbacks(sourcesAndSinks, null);
         }
@@ -473,7 +473,7 @@ public class SetupApplication {
          * @throws XmlPullParserException
          *             Thrown if the Android manifest file could not be read.
          */
-        protected void calculateCallbacks(ISourceSinkDefinitionProvider sourcesAndSinks, SootClass entryPoint)
+        public void calculateCallbacks(ISourceSinkDefinitionProvider sourcesAndSinks, SootClass entryPoint)
                         throws IOException, XmlPullParserException {
                 // Add the callback methods
                 LayoutFileParser lfp = null;
@@ -520,7 +520,7 @@ public class SetupApplication {
          *
          * @return The newly created layout file parser.
          */
-        protected LayoutFileParser createLayoutFileParser() {
+        public LayoutFileParser createLayoutFileParser() {
                 return new LayoutFileParser(this.manifest.getPackageName(), this.resources);
         }
 
@@ -534,7 +534,7 @@ public class SetupApplication {
          *            The callbacks that have been collected so far
          * @return The new source sink manager
          */
-        protected ISourceSinkManager createSourceSinkManager(LayoutFileParser lfp, Set<CallbackDefinition> callbacks) {
+        public ISourceSinkManager createSourceSinkManager(LayoutFileParser lfp, Set<CallbackDefinition> callbacks) {
                 AccessPathBasedSourceSinkManager sourceSinkManager = new AccessPathBasedSourceSinkManager(
                                 this.sourceSinkProvider.getSources(), this.sourceSinkProvider.getSinks(), callbacks, config,
                                 lfp == null ? null : lfp.getUserControlsByID());
@@ -547,7 +547,7 @@ public class SetupApplication {
         /**
          * Triggers the callgraph construction in Soot
          */
-        protected void constructCallgraphInternal() {
+        public void constructCallgraphInternal() {
                 // If we are configured to use an existing callgraph, we may not replace
                 // it
                 if (config.getSootIntegrationMode() == SootIntegrationMode.UseExistingCallgraph)
@@ -599,7 +599,7 @@ public class SetupApplication {
          * @throws IOException
          *             Thrown if a required configuration cannot be read
          */
-        protected void calculateCallbackMethods(LayoutFileParser lfp, SootClass component) throws IOException {
+        public void calculateCallbackMethods(LayoutFileParser lfp, SootClass component) throws IOException {
                 final CallbackConfiguration callbackConfig = config.getCallbackConfig();
 
                 // Load the APK file
@@ -785,7 +785,7 @@ public class SetupApplication {
          *            The map to invert
          * @return An inverted copy of the given map
          */
-        protected <K, V> MultiMap<K, V> invertMap(MultiMap<V, K> original) {
+        public <K, V> MultiMap<K, V> invertMap(MultiMap<V, K> original) {
                 MultiMap<K, V> newTag = new HashMultiMap<>();
                 for (V key : original.keySet())
                         for (K value : original.get(key))
@@ -796,7 +796,7 @@ public class SetupApplication {
         /**
          * Releases the callgraph and all intermediate objects associated with it
          */
-        protected void releaseCallgraph() {
+        public void releaseCallgraph() {
                 // If we are configured to use an existing callgraph, we may not release
                 // it
                 if (config.getSootIntegrationMode() == SootIntegrationMode.UseExistingCallgraph)
@@ -820,7 +820,7 @@ public class SetupApplication {
          * @return True if at least one new callback method has been added,
          *         otherwise false
          */
-        protected boolean collectXmlBasedCallbackMethods(LayoutFileParser lfp, AbstractCallbackAnalyzer jimpleClass) {
+        public boolean collectXmlBasedCallbackMethods(LayoutFileParser lfp, AbstractCallbackAnalyzer jimpleClass) {
                 SootMethod smViewOnClick = Scene.v()
                                 .grabMethod("<android.view.View$OnClickListener: void onClick(android.view.View)>");
 
@@ -907,7 +907,7 @@ public class SetupApplication {
          * @throws IOException
          *             Thrown if a required configuration cannot be read
          */
-        protected void calculateCallbackMethodsFast(LayoutFileParser lfp, SootClass component) throws IOException {
+        public void calculateCallbackMethodsFast(LayoutFileParser lfp, SootClass component) throws IOException {
                 // Construct the current callgraph
                 releaseCallgraph();
                 createMainMethod(component);
@@ -952,7 +952,7 @@ public class SetupApplication {
          *            The layout control whose callbacks are to be associated with
          *            the given class
          */
-        protected void registerCallbackMethodsForView(SootClass callbackClass, LayoutControl lc) {
+        public void registerCallbackMethodsForView(SootClass callbackClass, LayoutControl lc) {
                 // Ignore system classes
                 if (SystemClassHandler.isClassInSystemPackage(callbackClass.getName()))
                         return;
@@ -999,7 +999,7 @@ public class SetupApplication {
          *            only that component, or null to create main method for all
          *            components
          */
-        protected void createMainMethod(SootClass component) {
+        public void createMainMethod(SootClass component) {
                 // There is no need to create a main method if we don't want to generate
                 // a callgraph
                 if (config.getSootIntegrationMode() == SootIntegrationMode.UseExistingCallgraph)
@@ -1032,7 +1032,7 @@ public class SetupApplication {
          *
          * @return The classpath to be used for the taint analysis
          */
-        protected String getClasspath() {
+        public String getClasspath() {
                 final String androidJar = config.getAnalysisFileConfig().getAndroidPlatformDir();
                 final String apkFileLocation = config.getAnalysisFileConfig().getTargetAPKFile();
                 final String additionalClasspath = config.getAnalysisFileConfig().getAdditionalClasspath();
@@ -1051,7 +1051,7 @@ public class SetupApplication {
          * @param constructCallgraph
          *            True if a callgraph shall be constructed, otherwise false
          */
-        protected void initializeSoot(boolean constructCallgraph) {
+        public void initializeSoot(boolean constructCallgraph) {
                 logger.info("Initializing Soot...");
 
                 final String androidJar = config.getAnalysisFileConfig().getAndroidPlatformDir();
@@ -1137,7 +1137,7 @@ public class SetupApplication {
          * @author Steven Arzt
          *
          */
-        protected static class InPlaceInfoflow extends Infoflow {
+        public static class InPlaceInfoflow extends Infoflow {
 
                 /**
                  * Creates a new instance of the Infoflow class for analyzing Android
@@ -1421,7 +1421,7 @@ public class SetupApplication {
          * @param cfg
          *            The control flow graph to use for writing out the results
          */
-        protected void serializeResults(InfoflowResults results, IInfoflowCFG cfg) {
+        public void serializeResults(InfoflowResults results, IInfoflowCFG cfg) {
                 String resultsFile = config.getAnalysisFileConfig().getOutputFile();
                 if (resultsFile != null && !resultsFile.isEmpty()) {
                         InfoflowResultsSerializer serializer = new InfoflowResultsSerializer(cfg, config);
@@ -1442,7 +1442,7 @@ public class SetupApplication {
          *
          * @return A properly configured instance of the {@link Infoflow} class
          */
-        protected InPlaceInfoflow createInfoflow() {
+        public InPlaceInfoflow createInfoflow() {
                 // Initialize and configure the data flow tracker
                 final String androidJar = config.getAnalysisFileConfig().getTargetAPKFile();
                 InPlaceInfoflow info = new InPlaceInfoflow(androidJar, forceAndroidJar, cfgFactory);
@@ -1494,7 +1494,7 @@ public class SetupApplication {
          * @return The {@link AndroidEntryPointCreator} responsible for generating
          *         the dummy main method
          */
-        protected AndroidEntryPointCreator createEntryPointCreator(SootClass component) {
+        public AndroidEntryPointCreator createEntryPointCreator(SootClass component) {
                 Set<SootClass> components = getComponentsToAnalyze(component);
                 AndroidEntryPointCreator entryPointCreator = new AndroidEntryPointCreator(components);
 
@@ -1531,7 +1531,7 @@ public class SetupApplication {
          *            application class (if any), or null to analyze all classes.
          * @return The set of classes to analyze
          */
-        protected Set<SootClass> getComponentsToAnalyze(SootClass component) {
+        public Set<SootClass> getComponentsToAnalyze(SootClass component) {
                 if (component == null)
                         return this.entrypoints;
                 else {
