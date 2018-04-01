@@ -434,6 +434,8 @@ public class SetupApplication {
                 for (String className : entryPoints)
                         this.entrypoints.add(Scene.v().getSootClassUnsafe(className));
 
+                logger.info("entryPoints size: " + Integer.toString(this.entrypoints.size()));
+
                 // Parse the resource file
                 long beforeARSC = System.nanoTime();
                 this.resources = new ARSCFileParser();
