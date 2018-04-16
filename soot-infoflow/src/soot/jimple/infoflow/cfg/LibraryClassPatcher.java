@@ -41,7 +41,7 @@ public class LibraryClassPatcher {
          */
         public void patchLibraries() {
                 // Patch the android.os.Handler implementation
-                patchHandlerImplementation();
+                /* patchHandlerImplementation(); */
 
                 // Patch the java.lang.Thread implementation
                 /* patchThreadImplementation(); */
@@ -271,42 +271,42 @@ public class LibraryClassPatcher {
                 if (runnable == null || runnable.resolvingLevel() < SootClass.SIGNATURES)
                         return;
 
-                /* SootMethod smPost = sc.getMethodUnsafe("boolean post(java.lang.Runnable)");
-                 * SootMethod smPostAtFrontOfQueue = sc.getMethodUnsafe("boolean postAtFrontOfQueue(java.lang.Runnable)");
-                 * SootMethod smPostAtTimeWithToken = sc
-                 *              .getMethodUnsafe("boolean postAtTime(java.lang.Runnable,java.lang.Object,long)");
-                 * SootMethod smPostAtTime = sc.getMethodUnsafe("boolean postAtTime(java.lang.Runnable,long)");
-                 * SootMethod smPostDelayed = sc.getMethodUnsafe("boolean postDelayed(java.lang.Runnable,long)"); */
+                SootMethod smPost = sc.getMethodUnsafe("boolean post(java.lang.Runnable)");
+                SootMethod smPostAtFrontOfQueue = sc.getMethodUnsafe("boolean postAtFrontOfQueue(java.lang.Runnable)");
+                SootMethod smPostAtTimeWithToken = sc
+                             .getMethodUnsafe("boolean postAtTime(java.lang.Runnable,java.lang.Object,long)");
+                SootMethod smPostAtTime = sc.getMethodUnsafe("boolean postAtTime(java.lang.Runnable,long)");
+                SootMethod smPostDelayed = sc.getMethodUnsafe("boolean postDelayed(java.lang.Runnable,long)");
                 SootMethod smDispatchMessage = sc.getMethodUnsafe("void dispatchMessage(android.os.Message)");
 
-                /* if (smPost != null && (!smPost.hasActiveBody() || isStubImplementation(smPost.getActiveBody()))) {
-                 *      patchHandlerPostBody(smPost, runnable);
-                 *      smPost.addTag(new FlowDroidEssentialMethodTag());
-                 * }
-                 *
-                 * if (smPostAtFrontOfQueue != null && (!smPostAtFrontOfQueue.hasActiveBody()
-                 *              || isStubImplementation(smPostAtFrontOfQueue.getActiveBody()))) {
-                 *      patchHandlerPostBody(smPostAtFrontOfQueue, runnable);
-                 *      smPostAtFrontOfQueue.addTag(new FlowDroidEssentialMethodTag());
-                 * }
-                 *
-                 * if (smPostAtTime != null
-                 *              && (!smPostAtTime.hasActiveBody() || isStubImplementation(smPostAtTime.getActiveBody()))) {
-                 *      patchHandlerPostBody(smPostAtTime, runnable);
-                 *      smPostAtTime.addTag(new FlowDroidEssentialMethodTag());
-                 * }
-                 *
-                 * if (smPostAtTimeWithToken != null && (!smPostAtTimeWithToken.hasActiveBody()
-                 *              || isStubImplementation(smPostAtTimeWithToken.getActiveBody()))) {
-                 *      patchHandlerPostBody(smPostAtTimeWithToken, runnable);
-                 *      smPostAtTimeWithToken.addTag(new FlowDroidEssentialMethodTag());
-                 * }
-                 *
-                 * if (smPostDelayed != null
-                 *              && (!smPostDelayed.hasActiveBody() || isStubImplementation(smPostDelayed.getActiveBody()))) {
-                 *      patchHandlerPostBody(smPostDelayed, runnable);
-                 *      smPostDelayed.addTag(new FlowDroidEssentialMethodTag());
-                 * } */
+                if (smPost != null && (!smPost.hasActiveBody() || isStubImplementation(smPost.getActiveBody()))) {
+                     patchHandlerPostBody(smPost, runnable);
+                     smPost.addTag(new FlowDroidEssentialMethodTag());
+                }
+
+                if (smPostAtFrontOfQueue != null && (!smPostAtFrontOfQueue.hasActiveBody()
+                             || isStubImplementation(smPostAtFrontOfQueue.getActiveBody()))) {
+                     patchHandlerPostBody(smPostAtFrontOfQueue, runnable);
+                     smPostAtFrontOfQueue.addTag(new FlowDroidEssentialMethodTag());
+                }
+
+                if (smPostAtTime != null
+                             && (!smPostAtTime.hasActiveBody() || isStubImplementation(smPostAtTime.getActiveBody()))) {
+                     patchHandlerPostBody(smPostAtTime, runnable);
+                     smPostAtTime.addTag(new FlowDroidEssentialMethodTag());
+                }
+
+                if (smPostAtTimeWithToken != null && (!smPostAtTimeWithToken.hasActiveBody()
+                             || isStubImplementation(smPostAtTimeWithToken.getActiveBody()))) {
+                     patchHandlerPostBody(smPostAtTimeWithToken, runnable);
+                     smPostAtTimeWithToken.addTag(new FlowDroidEssentialMethodTag());
+                }
+
+                if (smPostDelayed != null
+                             && (!smPostDelayed.hasActiveBody() || isStubImplementation(smPostDelayed.getActiveBody()))) {
+                     patchHandlerPostBody(smPostDelayed, runnable);
+                     smPostDelayed.addTag(new FlowDroidEssentialMethodTag());
+                }
 
                 if (smDispatchMessage != null
                                 && (!smDispatchMessage.hasActiveBody() || isStubImplementation(smDispatchMessage.getActiveBody()))) {
