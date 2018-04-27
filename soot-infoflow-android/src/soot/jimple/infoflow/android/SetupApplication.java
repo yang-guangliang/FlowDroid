@@ -940,6 +940,7 @@ public class SetupApplication {
 
                 // Construct the final callgraph
                 releaseCallgraph();
+
                 createMainMethod(component);
                 constructCallgraphInternal();
         }
@@ -1350,7 +1351,6 @@ public class SetupApplication {
                         SootClass entrypoint = entrypointWorklist.remove(0);
 
                         // Perform basic app parsing
-                        System.out.println("@before callback");
                         try {
                                 if (config.getOneComponentAtATime())
                                         calculateCallbacks(sourcesAndSinks, entrypoint);
@@ -1361,7 +1361,6 @@ public class SetupApplication {
                                 e.printStackTrace();
                                 throw new RuntimeException("Callgraph construction failed", e);
                         }
-                        System.out.println("@after callback");
 
                         final Set<SourceSinkDefinition> sources = getSources();
                         final Set<SourceSinkDefinition> sinks = getSinks();
