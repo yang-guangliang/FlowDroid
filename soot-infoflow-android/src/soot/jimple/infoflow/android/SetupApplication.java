@@ -940,7 +940,6 @@ public class SetupApplication {
 
                 // Construct the final callgraph
                 releaseCallgraph();
-
                 createMainMethod(component);
                 constructCallgraphInternal();
         }
@@ -1380,6 +1379,8 @@ public class SetupApplication {
                                 createMainMethod(entrypoint);
                                 constructCallgraphInternal();
                         }
+                        // constructCallgraphInternal();
+                        // constructCallgraphInternal();
                         infoflow.runAnalysis(sourceSinkManager, dummyMainMethod);
 
                         // Update the statistics
