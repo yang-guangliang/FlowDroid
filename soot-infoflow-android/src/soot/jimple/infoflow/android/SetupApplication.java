@@ -573,9 +573,13 @@ public class SetupApplication {
                 // Make sure that we don't have any weird leftovers
                 releaseCallgraph();
 
+                long startTime = System.currentTimeMillis();
+
                 // Construct the actual callgraph
                 logger.info("Constructing the callgraph...");
                 PackManager.v().getPack("cg").apply();
+
+                logger.info("CG construction time - " + (System.currentTimeMillis() -startTime)/1000.0 + " s");
 
                 // ICC instrumentation
                 if (iccInstrumenter != null)
@@ -887,10 +891,7 @@ public class SetupApplication {
 
                 // Collect the fragments, merge the fragments created in the code with
                 // those declared in Xml files
-                if (fragmentClasses.putAll(jimpleClass.getFragmentClasses())) // Fragments
-                                                                                                                                                // declared
-                                                                                                                                                // in
-                                                                                                                                                // code
+                if (fragmentClasses.putAll(jimpleClass.getFragmentClasses()))
                         hasNewCallback = true;
 
                 return hasNewCallback;
@@ -921,8 +922,8 @@ public class SetupApplication {
                 // Collect the callback interfaces implemented in the app's
                 // source code
                 AbstractCallbackAnalyzer jimpleClass = callbackClasses == null
-                                ? new FastCallbackAnalyzer(config, entryPointClasses, callbackFile)
-                                : new FastCallbackAnalyzer(config, entryPointClasses, callbackClasses);
+                        ? new FastCallbackAnalyzer(config, entryPointClasses, callbackFile)
+                        : new FastCallbackAnalyzer(config, entryPointClasses, callbackClasses);
                 if (valueProvider != null)
                         jimpleClass.setValueProvider(valueProvider);
                 jimpleClass.collectCallbackMethods();
