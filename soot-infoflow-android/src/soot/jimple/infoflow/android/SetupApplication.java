@@ -804,8 +804,8 @@ public class SetupApplication {
                 if (config.getSootIntegrationMode() == SootIntegrationMode.UseExistingCallgraph)
                         return;
 
-                Scene.v().releaseCallGraph();
-                Scene.v().releasePointsToAnalysis();
+                /* Scene.v().releaseCallGraph(); */
+                /* Scene.v().releasePointsToAnalysis(); */
                 Scene.v().releaseReachableMethods();
                 G.v().resetSpark();
         }
@@ -1379,8 +1379,8 @@ public class SetupApplication {
                                 createMainMethod(entrypoint);
                                 constructCallgraphInternal();
                         }
-                        // constructCallgraphInternal();
-                        // constructCallgraphInternal();
+                        /* constructCallgraphInternal();
+                         * constructCallgraphInternal(); */
                         infoflow.runAnalysis(sourceSinkManager, dummyMainMethod);
 
                         // Update the statistics
