@@ -30,6 +30,9 @@ public class SystemClassHandler {
                         || className.startsWith("org.w3c.")
                         || className.startsWith("org.json.")
                         || className.startsWith("org.xml")
+                        || className.startsWith("com.google")
+                        || className.startsWith("com.android")
+                        || className.startsWith("com.paypal")
                         || className.startsWith("soot.");
                 /* return className.startsWith("android.") || className.startsWith("java.") || className.startsWith("javax.")
                  *              || className.startsWith("sun.") || className.startsWith("org.omg.")

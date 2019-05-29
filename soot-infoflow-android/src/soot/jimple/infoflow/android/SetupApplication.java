@@ -1177,7 +1177,8 @@ public class SetupApplication {
         public void constructCallgraph() {
                 boolean oldRunAnalysis = config.isTaintAnalysisEnabled();
                 try {
-                        config.setTaintAnalysisEnabled(false);
+                        /* config.setTaintAnalysisEnabled(false); */
+                        config.setTaintAnalysisEnabled(true);
 
                         // The runInfoflow method can take a null provider as long as we
                         // don't
